@@ -2,8 +2,6 @@
 
 Benvenuto nel mio repository principale!
 
-Questo progetto raccoglie i collegamenti ai miei due repository secondari dove tengo tutto il materiale tecnico, script e documentazione operativa legata alle attività quotidiane da System Administrator.
-
 ---
 
 ## 📦 Repository Secondari
@@ -12,7 +10,7 @@ Questo progetto raccoglie i collegamenti ai miei due repository secondari dove t
 
 Raccolta di script utili per attività sistemistiche, manutenzioni, automazioni e troubleshooting su ambienti Windows Server e client.
 
-👉 [Vai al repository degli script]([[https://github.com/tuo-utente/scripts-repo](https://github.com/ab-sysadmin/powershell-scripts)](https://github.com/ab-sysadmin/powershell-scripts))
+👉 [Vai al repository degli script] https://github.com/ab-sysadmin/powershell-scripts
 
 ---
 
@@ -20,7 +18,7 @@ Raccolta di script utili per attività sistemistiche, manutenzioni, automazioni 
 
 Contiene appunti di studio, guide operative, knowledge base e materiale tecnico utile raccolto durante l’esperienza sul campo.
 
-👉 [Vai al repository degli appunti]([https://github.com/tuo-utente/docs-repo](https://github.com/ab-sysadmin/notebook))
+👉 [Vai al repository degli appunti] [https://github.com/ab-sysadmin/powershell-scripts](https://github.com/ab-sysadmin/notebook)
 
 ---
 
