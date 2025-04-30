@@ -1,42 +1,42 @@
 # 📁 System Administrator Resources
 
-Benvenuto nel mio repository principale!
+Welcome to my main repository!
 
 ---
 
-## 📦 Repository Secondari
+## 📦 Secondary Repositories
 
 ### 🔧 PowerShell & Batch Scripts
 
-Raccolta di script utili per attività sistemistiche, manutenzioni, automazioni e troubleshooting su ambienti Windows Server e client.
+A collection of useful scripts for system administration, maintenance, automation, and troubleshooting on Windows Server and client environments.
 
-👉 [Vai al repository degli script] https://github.com/ab-sysadmin/powershell-scripts
-
----
-
-### 📚 Documentazione Tecnica e Appunti
-
-Contiene appunti di studio, guide operative, knowledge base e materiale tecnico utile raccolto durante l’esperienza sul campo.
-
-👉 [Vai al repository degli appunti] [https://github.com/ab-sysadmin/powershell-scripts](https://github.com/ab-sysadmin/notebook)
+👉 [Go to the scripts repository](https://github.com/ab-sysadmin/powershell-scripts)
 
 ---
 
-> 🔐 *Tutti i repository sono mantenuti a scopo personale, ma potrebbero contenere strumenti utili anche ad altri SysAdmin.*
+### 📚 Technical Documentation & Notes
+
+Includes study notes, operational guides, knowledge base articles, and useful technical material gathered from field experience.
+
+👉 [Go to the notes repository](https://github.com/ab-sysadmin/notebook)
 
 ---
 
-## 🧭 Come navigare
-
-- Clicca su uno dei link sopra per esplorare il contenuto dei singoli progetti.
-- Puoi scaricare, clonare o contribuire tramite fork se trovi materiale utile.
+> 🔐 *All repositories are maintained for personal use, but they may contain useful tools for other SysAdmins as well.*
 
 ---
 
-## 📬 Contatti
+## 🧭 How to Navigate
 
-Per suggerimenti o collaborazioni, apri una issue o contattami tramite GitHub.
+- Click on one of the links above to explore the contents of each project.
+- You can download, clone, or contribute via fork if you find something useful.
 
 ---
 
-© 2025 – System Admin Notes Repository
+## 📬 Contact
+
+For suggestions or collaborations, open an issue or contact me via GitHub.
+
+---
+
+© 2025 – System Admin Repository
