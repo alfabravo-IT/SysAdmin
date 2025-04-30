@@ -35,7 +35,7 @@ Includes study notes, operational guides, knowledge base articles, and useful te
 
 ## 📬 Contact
 
-For suggestions or collaborations, open an issue or contact me via GitHub.
+For suggestions, open an issue or contact me via GitHub.
 
 ---
 
