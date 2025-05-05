@@ -1,0 +1,13 @@
+# Ignora questi file specifici
+repo-structure.md
+repo-structure.ps1
+Essential_Hardening_WindowsServer_part1.pdf
+Essential_Hardening_WindowsServer_part2..pdf
+
+# Evita file temporanei e segreti
+*.log
+*.bak
+.env
+*.tmp
+secrets/
+*.swp
