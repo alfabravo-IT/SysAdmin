@@ -17,6 +17,7 @@ Welcome to my main repository!
 |   |   |   +-- 4_VTSP-Kubernetes-Data-Protection.md
 |   |   |   +-- 5_VTSP-Soluzion-Service-Provider.md
 |   +-- Windows-Server
+|   |   +-- ad_manual_dc_remove.md
 |   |   +-- ad_ports_services.md
 |   |   +-- ad-cmdlt-check-replica.md
 |   |   +-- ad-disable-ms-defender-gpo.md
@@ -57,4 +58,3 @@ Welcome to my main repository!
 |   +-- RDP_NLA_Diagnostics.ps1.ps1
 |   +-- RDP-NLA-Kerberos-Diagnostics.ps1
 |   +-- Reset-LogOnAsService.ps1
-```
