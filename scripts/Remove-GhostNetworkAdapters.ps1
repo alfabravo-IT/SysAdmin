@@ -1,5 +1,37 @@
-# Remove-GhostNetworkAdapters.ps1
-# This script lists and optionally removes ghost (non-present) network adapters.
+<#
+.SYNOPSIS
+This script identifies and optionally removes ghost (non-present) network adapters from the system.
+
+.DESCRIPTION
+The script scans for ghost network adapters, which are network devices in an 'Unknown' or 'Error' state. 
+It logs the detected adapters to a file and provides the option to remove them. 
+The log file is saved in the same directory as the script with a timestamped filename.
+
+.PARAMETER None
+The script does not take any parameters. It operates on the local system.
+
+.OUTPUTS
+- A log file containing details of detected ghost network adapters (Name, Status, InstanceId).
+- Console output indicating the progress and results of the operation.
+
+.NOTES
+- Requires administrative privileges to execute.
+- Uses the `Get-PnpDevice` and `Remove-PnpDevice` cmdlets, which are available in Windows PowerShell 5.1 or later.
+- Ensure that the script is run in an environment where `$PSScriptRoot` is properly resolved.
+
+.EXAMPLE
+# Run the script to scan for ghost network adapters and optionally remove them:
+.\Remove-GhostNetworkAdapters.ps1
+
+# The script will prompt the user to confirm removal of detected ghost adapters.
+
+# Copyright © 2023 Andrea Balconi
+# Version: 1.0
+# Last Updated: 2023-10-01
+
+#>
+
+
 
 # Define log path based on script location
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
