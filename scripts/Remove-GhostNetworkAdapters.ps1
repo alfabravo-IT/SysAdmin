@@ -1,37 +1,5 @@
-<#
-.SYNOPSIS
-This script identifies and optionally removes ghost (non-present) network adapters from the system.
-
-.DESCRIPTION
-The script scans for ghost network adapters, which are network devices in an 'Unknown' or 'Error' state. 
-It logs the detected adapters to a file and provides the option to remove them. 
-The log file is saved in the same directory as the script with a timestamped filename.
-
-.PARAMETER None
-The script does not take any parameters. It operates on the local system.
-
-.OUTPUTS
-- A log file containing details of detected ghost network adapters (Name, Status, InstanceId).
-- Console output indicating the progress and results of the operation.
-
-.NOTES
-- Requires administrative privileges to execute.
-- Uses the `Get-PnpDevice` and `Remove-PnpDevice` cmdlets, which are available in Windows PowerShell 5.1 or later.
-- Ensure that the script is run in an environment where `$PSScriptRoot` is properly resolved.
-
-.EXAMPLE
-# Run the script to scan for ghost network adapters and optionally remove them:
-.\Remove-GhostNetworkAdapters.ps1
-
-# The script will prompt the user to confirm removal of detected ghost adapters.
-
-# Copyright © 2023 Andrea Balconi
-# Version: 1.0
-# Last Updated: 2023-10-01
-
-#>
-
-
+# Remove-GhostNetworkAdapters.ps1
+# This script lists and optionally removes ghost (non-present) network adapters.
 
 # Define log path based on script location
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
@@ -42,17 +10,24 @@ if (-not (Test-Path -Path $PSScriptRoot)) {
     New-Item -ItemType Directory -Path $PSScriptRoot -Force | Out-Null
 }
 
-Write-Host "\Scanning for ghost (non-present) network adapters..." -ForegroundColor Cyan
+# Check if pnputil.exe is available
+if (-not (Get-Command pnputil.exe -ErrorAction SilentlyContinue)) {
+    Write-Host "❌ pnputil.exe not found. Cannot proceed with removal." -ForegroundColor Red
+    Add-Content -Path $logPath -Value "ERROR: pnputil.exe not found on this system."
+    return
+}
 
-# Get ghost network adapters (those in 'Unknown' or 'Error' state)
-$ghostNics = Get-PnpDevice -Class Net | Where-Object { $_.Status -eq "Unknown" -or $_.Status -eq "Error" }
+Write-Host "\n🧹 Scanning for ghost (non-present) network adapters..." -ForegroundColor Cyan
+
+# Get ghost network adapters using WMI
+$ghostNics = Get-WmiObject Win32_NetworkAdapter | Where-Object { $_.NetConnectionStatus -eq $null -and $_.PNPDeviceID }
 
 # Log the detected ghost adapters
-$ghostNics | Select-Object Name, Status, InstanceId | Out-File -FilePath $logPath -Encoding UTF8
-Write-Host "\nReport saved to: $logPath" -ForegroundColor Yellow
+$ghostNics | Select-Object Name, PNPDeviceID | Tee-Object -FilePath $logPath -Encoding UTF8 | Out-Null
+Write-Host "\n📄 Report saved to: $logPath" -ForegroundColor Yellow
 
 if ($ghostNics.Count -eq 0) {
-    Write-Host "No ghost adapters found. System is clean." -ForegroundColor Green
+    Write-Host "✅ No ghost adapters found. System is clean." -ForegroundColor Green
     return
 }
 
@@ -60,16 +35,19 @@ Write-Host "\nFound $($ghostNics.Count) ghost network adapter(s)."
 $confirm = Read-Host "Do you want to remove them now? (y/n)"
 
 if ($confirm -match "^[yY]") {
-    $ghostNics | ForEach-Object {
-        Write-Host "Removing: $($_.Name)" -ForegroundColor DarkYellow
+    foreach ($nic in $ghostNics) {
+        Write-Host "🔧 Removing: $($nic.Name)" -ForegroundColor DarkYellow
+        $id = $nic.PNPDeviceID
         try {
-            Remove-PnpDevice -InstanceId $_.InstanceId -Confirm:$false
-            Write-Host "Removed: $($_.Name)" -ForegroundColor Green
+            $output = Start-Process -FilePath "pnputil.exe" -ArgumentList "/remove-device $id" -Wait -NoNewWindow -PassThru
+            Add-Content -Path $logPath -Value "Removed: $($nic.Name) | DeviceID: $id | ExitCode: $($output.ExitCode)"
+            Write-Host "✔️ Removed: $($nic.Name)" -ForegroundColor Green
         } catch {
-            Write-Host "Failed to remove $($_.Name): $_" -ForegroundColor Red
+            Add-Content -Path $logPath -Value "FAILED to remove: $($nic.Name) | DeviceID: $id | Error: $_"
+            Write-Host "❌ Failed to remove $($nic.Name): $_" -ForegroundColor Red
         }
     }
-    Write-Host "\nCleanup complete!" -ForegroundColor Cyan
+    Write-Host "\n🎉 Cleanup complete!" -ForegroundColor Cyan
 } else {
-    Write-Host "\nNo changes made. Review the log file for details." -ForegroundColor Gray
+    Write-Host "\n❕ No changes made. Review the log file for details." -ForegroundColor Gray
 }
