@@ -1,28 +1,4 @@
-﻿<#
-.SYNOPSIS
-    Script for automatically creating users in Active Directory from a CSV file.
-    Each user will have a randomly generated password and can be added to one or more groups.
-
-.DESCRIPTION
-    This script imports a list of users from a CSV file and automatically creates the users in Active Directory.
-    It checks for required fields (Account, First Name, Last Name, Email), generates a random password, and configures 
-    user details such as first name, last name, email address, and UPN (UserPrincipalName) based on a specified domain.
-    The user is then optionally added to the AD groups specified in the CSV file. At the end, a CSV report is generated with the details of the created users.
-
-.PARAMETER CSV
-    The input CSV file must contain the following columns: 
-    Account, First Name, Last Name, Email, Groups (optional).
-
-.EXAMPLE
-    CreaUtentiAD.ps1
-    Runs the script for automatically creating users in AD.
-
-.NOTES
-    Script created by: Andrea Balconi (Cegeka)
-    Creation date: 2025-04-29
-#>
-
-# Check if the CSV file exists
+﻿# Check if the CSV file exists
 $csvPath = "$PSScriptRoot\AD-Create-Users-List.csv"
 if (-not (Test-Path $csvPath)) {
     Write-Error "The CSV file does not exist: $csvPath"
