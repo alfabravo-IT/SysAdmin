@@ -1,6 +1,7 @@
-# Ignora questi file specifici
+# Ignora questi file specifici e cartelle
 repo-structure.md
 repo-structure.ps1
+aruba-delivery
 
 # Evita file temporanei e segreti
 *.log
@@ -9,3 +10,28 @@ repo-structure.ps1
 *.tmp
 secrets/
 *.swp
+
+# Ignora file di sistema
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Ignora file di backup
+*.tmp
+*.old
+*.orig
+*.swp
+
+# Ignora file di configurazione dell'IDE
+*.iml
+*.sublime-project
+
+# Ignora file di log
+*.log
+
+# Ignora file di cache
+.cache/
+   
