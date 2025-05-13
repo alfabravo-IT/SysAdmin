@@ -28,8 +28,8 @@
 
 # === Initial Settings ===
 $dataOra = Get-Date -Format "yyyy-MM-dd_HH-mm"
-$reportHtmlPath = "$PSScriptRoot\reports\AD_Replica_Report_$dataOra.html"
-$reportCsvPath = "$PSScriptRootreports\AD_Replica_Report_$dataOra.csv"
+$reportHtmlPath = "$PSScriptRoot\AD_Replica_Report_$dataOra.html"
+$reportCsvPath = "$PSScriptRoot\\AD_Replica_Report_$dataOra.csv"
 $reportData = @()
 $reportHtml = @()
 $domainControllers = Get-ADDomainController -Filter *
@@ -160,7 +160,7 @@ foreach ($dc in $domainControllers) {
 }
 
 # === Generate HTML Report ===
-$htmlOutput = ConvertTo-HtmlReport -title "Active Directory Replica Report ($dataOra)" -content @($fsmoReport, $reportHtml)
+$htmlOutput = ConvertTo-HtmlReport -title "Active Directory Replica Report ($dataOra)" -content @($fsmoReport, ($reportHtml -join "`n"))
 $htmlOutput | Out-File -FilePath $reportHtmlPath -Encoding UTF8
 
 # === Generate CSV Report ===
