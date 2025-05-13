@@ -1,4 +1,44 @@
-﻿# Check if the CSV file exists
+﻿<#
+.SYNOPSIS
+    Script to create Active Directory (AD) users from a CSV file.
+
+.DESCRIPTION
+    This script reads user data from a CSV file and creates new users in Active Directory.
+    It also assigns users to specified groups and generates random passwords for each user.
+    A report of the operation is saved to a CSV file.
+
+.PARAMETER csvPath
+    The path to the CSV file containing user data. The file must include the following columns:
+    - Account: The SAM account name for the user.
+    - FirstName: The first name of the user.
+    - LastName: The last name of the user.
+    - Email: The email address of the user.
+    - Groups: (Optional) A semicolon-separated list of groups to which the user should be added.
+
+.PARAMETER organizationalUnit
+    The distinguished name (DN) of the Organizational Unit (OU) where the users will be created.
+
+.PARAMETER userPrincipalNameDomain
+    The domain to be appended to the UserPrincipalName (UPN) for each user.
+
+.OUTPUTS
+    A CSV file containing the results of the operation, including the generated passwords and status for each user.
+
+.NOTES
+    - Ensure the script is run with sufficient privileges to create users in Active Directory.
+    - The script checks for existing users to avoid duplication.
+    - Passwords are randomly generated and included in the output report.
+
+.EXAMPLE
+    # Run the script to create users from the default CSV file
+    .\AD-Create-Users.ps1
+
+    # Output:
+    # Process completed. Details saved in the CSV file.
+    # Report file: <script directory>\AD-Create-Users-report.csv
+#>
+
+# Check if the CSV file exists
 $csvPath = "$PSScriptRoot\AD-Create-Users-List.csv"
 if (-not (Test-Path $csvPath)) {
     Write-Error "The CSV file does not exist: $csvPath"
