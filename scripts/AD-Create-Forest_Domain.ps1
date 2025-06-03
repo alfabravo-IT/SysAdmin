@@ -1,63 +1,48 @@
-<#
-.SYNOPSIS
-    Crea e configura una nuova foresta Active Directory e un dominio denominato "lab.local" su un server Windows.
+﻿# ========================================
+# Script completo per creare un dominio lab.local
+# Autore: Andrea (aka SysAdmin che non molla)
+# ========================================
 
-.DESCRIPTION
-    Questo script PowerShell automatizza l'installazione dei ruoli necessari (Active Directory Domain Services e DNS), 
-    verifica i privilegi amministrativi, richiede la password DSRM, e promuove il server a Domain Controller per il dominio "lab.local".
-    Se la promozione ha successo, il server verrà riavviato automaticamente.
+function Info($msg)  { Write-Host "🔹 $msg" -ForegroundColor Cyan }
+function Ok($msg)    { Write-Host "✅ $msg" -ForegroundColor Green }
+function Warn($msg)  { Write-Host "⚠️ $msg" -ForegroundColor Yellow }
+function Fail($msg)  { Write-Host "❌ $msg" -ForegroundColor Red }
 
-.PARAMETER Nessuno
-    Lo script non accetta parametri tramite riga di comando, ma richiede l'inserimento interattivo della password DSRM.
-
-.NOTES
-    - Deve essere eseguito con privilegi di amministratore.
-    - Compatibile con Windows Server che supporta i cmdlet ADDS.
-    - Personalizzare i parametri del dominio se necessario.
-
-.AUTHOR
-    andrea.balconi@cegeka.com
-
-.EXAMPLE
-    Esegui lo script come amministratore:
-        .\AD-Create-Forest_Domain.ps1
-
-    Segui le istruzioni a schermo per inserire la password DSRM.
-#>
-# ===============================
-# Crea nuovo dominio lab.local
-# ===============================
-
-# Colori e stile output
-function Info($msg) { Write-Host "🔹 $msg" -ForegroundColor Cyan }
-function Ok($msg) { Write-Host "✅ $msg" -ForegroundColor Green }
-function Warn($msg) { Write-Host "⚠️ $msg" -ForegroundColor Yellow }
-
-# Verifica privilegi
+# Verifica esecuzione come amministratore
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole("Administrator")) {
-    throw "Devi eseguire questo script come amministratore!"
+    Fail "Devi eseguire questo script come amministratore!"
+    exit 1
 }
 
-# Installa ruoli AD DS e DNS se non presenti
-Info "Controllo ruoli AD DS e DNS..."
+# Step 1: Installa i ruoli e moduli richiesti
+$features = @("AD-Domain-Services", "DNS", "RSAT-AD-PowerShell")
+$missing = $features | Where-Object { -not (Get-WindowsFeature $_).Installed }
 
-$roles = @("AD-Domain-Services", "DNS")
-foreach ($role in $roles) {
-    if (-not (Get-WindowsFeature -Name $role).Installed) {
-        Info "Installo ruolo $role..."
-        Install-WindowsFeature -Name $role -IncludeManagementTools -Verbose
-    } else {
-        Ok "Ruolo $role già installato."
-    }
+if ($missing.Count -gt 0) {
+    Info "Installo i seguenti componenti: $($missing -join ', ')"
+    Install-WindowsFeature -Name $missing -IncludeManagementTools -Verbose
+
+    Warn "Riavvia la macchina per completare l'installazione dei moduli. Poi rilancia lo script."
+    pause
+    exit
+} else {
+    Ok "Tutti i ruoli e moduli richiesti sono già presenti."
 }
 
-# Chiedi password DSRM
-$dsrmPassword = Read-Host "🔐 Inserisci la password DSRM" -AsSecureString
+# Step 2: Verifica se il modulo è disponibile
+if (-not (Get-Command Install-ADDSForest -ErrorAction SilentlyContinue)) {
+    Fail "Modulo ADDSDeployment non trovato. Chiudi e riapri PowerShell come Admin dopo l'installazione dei ruoli."
+    exit 1
+}
 
-# Richiedi parametri del dominio in modo interattivo
-$domainName = Read-Host "🌐 Inserisci il nome del dominio (es. lab.local)"
-$netbiosName = Read-Host "🖥️ Inserisci il nome NetBIOS del dominio (es. LAB)"
+# Step 3: Parametri dominio (inserimento interattivo)
+$domainName = Read-Host "🌐 Inserisci il nome del dominio (es: lab.local)"
+$netbiosName = Read-Host "🖥️  Inserisci il nome NetBIOS (es: LAB)"
 
+# Step 4: Chiedi password DSRM in modo sicuro
+$dsrmPassword = Read-Host "🔐 Inserisci la password DSRM (ripristino directory)" -AsSecureString
+
+# Step 5: Promozione a Domain Controller
 Info "Promuovo il server a Domain Controller per il dominio $domainName..."
 
 Install-ADDSForest `
@@ -71,4 +56,4 @@ Install-ADDSForest `
     -SysvolPath "C:\Windows\SYSVOL" `
     -Force:$true
 
-# ⚠️ Se il server viene promosso con successo, si riavvierà automaticamente
+# La macchina si riavvierà automaticamente al termine.
