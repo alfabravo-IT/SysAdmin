@@ -1,7 +1,4 @@
 # Ignora questi file specifici e cartelle
-repo-structure.md
-repo-structure.ps1
-aruba
 
 # Evita file temporanei e segreti
 *.log
