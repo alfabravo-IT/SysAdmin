@@ -1,58 +1,58 @@
-# 📘 Configurazione di SQL Server on-premises con Azure Arc
+# 📘 Configuring On-premises SQL Server with Azure Arc
 
-Questa guida descrive la procedura dettagliata per collegare un'istanza di SQL Server in esecuzione su Windows Server a **Azure Arc**, permettendo la gestione da Azure Portal come risorsa ibrida.
-
----
-
-## ✅ Requisiti
-
-### 📡 Requisiti di rete (uscita dal server verso internet)
-
-| Tipo     | Destinazione                           | Porta | Protocollo |
-|----------|----------------------------------------|-------|------------|
-| DNS      | *.azure.com, *.microsoft.com           | 53    | UDP/TCP    |
-| HTTPS    | *.azmk8s.io, *.azure-automation.net, *.blob.core.windows.net, *.azureedge.net, *.monitor.azure.com, *.login.microsoftonline.com | 443 | TCP        |
-
-> Se è presente un proxy aziendale, è necessario configurarlo in Windows (`netsh winhttp set proxy`) o usarlo nei comandi `az`.
+This guide provides a step-by-step procedure to connect a SQL Server instance running on Windows Server to **Azure Arc**, enabling management from the Azure Portal as a hybrid resource.
 
 ---
 
-### 💻 Requisiti sul server Windows
+## ✅ Requirements
 
-- Windows Server 2016 o superiore
-- SQL Server 2012 o superiore
-- Account locale amministratore
-- Accesso a Internet
+### 📡 Network Requirements (outbound from server to internet)
+
+| Type     | Destination                           | Port | Protocol |
+|----------|---------------------------------------|------|----------|
+| DNS      | *.azure.com, *.microsoft.com          | 53   | UDP/TCP  |
+| HTTPS    | *.azmk8s.io, *.azure-automation.net, *.blob.core.windows.net, *.azureedge.net, *.monitor.azure.com, *.login.microsoftonline.com | 443 | TCP      |
+
+> If a corporate proxy is present, configure it in Windows (`netsh winhttp set proxy`) or use it with `az` commands.
+
+---
+
+### 💻 Requirements on the Windows Server
+
+- Windows Server 2016 or later
+- SQL Server 2012 or later
+- Local administrator account
+- Internet access
 - PowerShell 5.1+
-- Permessi `sysadmin` sull'istanza SQL Server
-- Azure CLI installata
-- Azure Connected Machine Agent installabile
+- `sysadmin` permissions on the SQL Server instance
+- Azure CLI installed
+- Azure Connected Machine Agent installable
 
 ---
 
-### ☁️ Requisiti su Azure
+### ☁️ Requirements on Azure
 
-- Sottoscrizione Azure attiva
-- Permessi per registrare risorse Azure Arc
-- Gruppo di risorse
-- Regione supportata da Azure Arc (es. `westeurope`)
-
----
-
-## ⚙️ Procedura dettagliata
+- Active Azure subscription
+- Permissions to register Azure Arc resources
+- Resource group
+- Azure Arc supported region (e.g., `westeurope`)
 
 ---
 
-### 🥇 1. Installare Azure CLI
+## ⚙️ Step-by-step Procedure
 
-Aprire PowerShell **come amministratore** ed eseguire:
+---
+
+### 🥇 1. Install Azure CLI
+
+Open PowerShell **as administrator** and run:
 
 ```powershell
 Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi
 Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
 ```
 
-Verifica l’installazione:
+Verify the installation:
 
 ```powershell
 az version
@@ -60,21 +60,21 @@ az version
 
 ---
 
-### 🥈 2. Autenticarsi su Azure
+### 🥈 2. Authenticate to Azure
 
 ```powershell
 az login
 ```
 
-Se hai più sottoscrizioni:
+If you have multiple subscriptions:
 
 ```powershell
-az account set --subscription "NOME_TUA_SOTTOSCRIZIONE"
+az account set --subscription "YOUR_SUBSCRIPTION_NAME"
 ```
 
 ---
 
-### 🥉 3. Installare Azure Connected Machine Agent
+### 🥉 3. Install Azure Connected Machine Agent
 
 ```powershell
 $agentUrl = "https://aka.ms/AzureConnectedMachineAgent"
@@ -84,25 +84,25 @@ Start-Process msiexec.exe -Wait -ArgumentList "/i AzureConnectedMachineAgent.msi
 
 ---
 
-### 🏅 4. Connettere il server a Azure Arc
+### 🏅 4. Connect the Server to Azure Arc
 
 ```powershell
 az connectedmachine connect `
-  --resource-group NOME-RG `
+  --resource-group RESOURCE-GROUP-NAME `
   --location westeurope `
-  --name NOME-LOGICO-SERVER `
+  --name LOGICAL-SERVER-NAME `
   --tags "env=onprem" "managedBy=arc"
 ```
 
 ---
 
-### 🧩 5. Aggiungere l'estensione SQL Server
+### 🧩 5. Add the SQL Server Extension
 
 ```powershell
 az connectedmachine extension create `
-  --machine-name NOME-LOGICO-SERVER `
+  --machine-name LOGICAL-SERVER-NAME `
   --name Microsoft.AzureData.SqlServer `
-  --resource-group NOME-RG `
+  --resource-group RESOURCE-GROUP-NAME `
   --location westeurope `
   --publisher Microsoft.AzureData `
   --type SqlServer `
@@ -112,52 +112,52 @@ az connectedmachine extension create `
 
 ---
 
-### 🧪 6. Registrare SQL Server su Azure Arc
+### 🧪 6. Register SQL Server with Azure Arc
 
-Scarica lo script ufficiale:
+Download the official script:
 
 ```powershell
 Invoke-WebRequest -Uri https://aka.ms/arc-sql/onboarding-script -OutFile .\EnableSQLArc.ps1
 ```
 
-Esegui lo script:
+Run the script:
 
 ```powershell
 .\EnableSQLArc.ps1 `
-  -azureResourceGroup "NOME-RG" `
+  -azureResourceGroup "RESOURCE-GROUP-NAME" `
   -azureRegion "westeurope" `
-  -sqlInstanceName "NOME-ISTANZA-SQL" `
+  -sqlInstanceName "SQL-INSTANCE-NAME" `
   -useWindowsAuthentication
 ```
 
-> Per istanze named o porte personalizzate:
-> Aggiungi `-sqlInstance "NOME\ISTANZA"` e `-sqlInstancePort 1433`
+> For named instances or custom ports:
+> Add `-sqlInstance "NAME\INSTANCE"` and `-sqlInstancePort 1433`
 
 ---
 
-## ✅ Verifica su Azure
+## ✅ Verification on Azure
 
-1. Vai su **Azure Portal**
-2. Naviga in **Azure Arc > Server**
-3. Verifica che il server sia registrato
-4. Verifica che in **SQL Server – Azure Arc** sia visibile l’istanza SQL, versione, configurazione e stato
+1. Go to **Azure Portal**
+2. Navigate to **Azure Arc > Servers**
+3. Verify that the server is registered
+4. Check that under **SQL Server – Azure Arc** the SQL instance, version, configuration, and status are visible
 
 ---
 
-## 🎁 Extra (opzionali)
+## 🎁 Extra (optional)
 
 ### 🔐 Azure Key Vault Integration
-Per archiviare e usare segreti (es. stringhe connessione).
+To store and use secrets (e.g., connection strings).
 
-### 📊 Azure Monitor e Defender for SQL
-Per abilitare monitoraggio, sicurezza e auditing centralizzati via Azure.
+### 📊 Azure Monitor and Defender for SQL
+To enable centralized monitoring, security, and auditing via Azure.
 
 ---
 
-## 📌 Note finali
+## 📌 Final Notes
 
-- La registrazione via Azure Arc **non sposta** il database nel cloud
-- Puoi usufruire dell’**Azure Hybrid Benefit**
-- Puoi applicare **policy, compliance e automazioni** su SQL locale come su SQL cloud
+- Registration via Azure Arc **does not move** the database to the cloud
+- You can benefit from **Azure Hybrid Benefit**
+- You can apply **policy, compliance, and automation** to on-prem SQL just like cloud SQL
 
 ---
