@@ -1,6 +1,6 @@
 <#
 .NOTES
-    Author   : Andrea Balconi (Cegeka)
+    Author   : Andrea Balconi
     Date     : 29/04/2025
     Version  : 2.0
 .SYNOPSIS

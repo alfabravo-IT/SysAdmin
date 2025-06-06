@@ -1,22 +1,33 @@
-<#
-.SYNOPSIS
-  Ultra-Clean Script to remove OneDrive from Windows 10/11
-
-.DESCRIPTION
-  This script allows you to completely remove OneDrive from a Windows 10/11 system, both 32-bit and 64-bit.
-  It performs the following operations:
-  - Verifies that the script is run with administrator privileges.
-  - Terminates the OneDrive process if it is active.
-  - Uninstalls OneDrive for both 64-bit and 32-bit versions.
-  - Modifies the registry to prevent file synchronization and remove residual OneDrive entries.
-  - Registers the deletion of residual OneDrive folders upon system reboot.
-  - Requires a reboot to complete the cleanup.
-
-.NOTES
-  Author   : Andrea Balconi (Cegeka)
-  Date     : 29/04/2025
-  Version  : 1.0
-#>
+:: -----------------------------------------------------------------------------
+:: Ultra-Clean Script to Remove OneDrive (Windows 10/11 - 64bit and 32bit)
+::
+:: DESCRIPTION:
+::   This script forcefully uninstalls Microsoft OneDrive from Windows systems,
+::   applies registry modifications to disable OneDrive integration, and schedules
+::   deletion of residual OneDrive folders upon reboot.
+::
+:: FEATURES:
+::   - Checks for administrative privileges before proceeding.
+::   - Terminates any running OneDrive processes.
+::   - Uninstalls both 64-bit and 32-bit versions of OneDrive.
+::   - Applies registry changes to disable OneDrive and remove shell integration.
+::   - Registers residual OneDrive folders for deletion on next reboot.
+::   - Prompts user to restart the computer to complete the cleanup.
+::
+:: USAGE:
+::   - Run this script as an Administrator.
+::   - Follow on-screen prompts.
+::   - Restart the computer after execution to finalize removal.
+::
+:: NOTES:
+::   - This script is intended for advanced users and system administrators.
+::   - Ensure you have backups of important data before running.
+::   - Some registry changes may affect system behavior regarding OneDrive.
+::
+:: Author      : Andrea Balconi
+:: Date        : 2024-06-07
+:: Version     : 1.0
+:: -----------------------------------------------------------------------------
 
 @echo off
 echo ===============================================

@@ -11,7 +11,7 @@
     when using tools like PsExec or WMI with local accounts.
 
 .AUTHOR
-    Andrea Balconi (Cegeka)
+    Andrea Balconi
 
 .DATE
     29/04/2025

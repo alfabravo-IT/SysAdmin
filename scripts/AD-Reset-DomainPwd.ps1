@@ -28,7 +28,7 @@
     and generate a report "reset-domain-pwd-report.txt".
 
 .NOTES
-    Script created by: Andrea Balconi (Cegeka)
+    Script created by: Andrea Balconi
     Creation date: 2025-04-29
     Version: 2.0
     Changes: Added error handling, improved reporting.

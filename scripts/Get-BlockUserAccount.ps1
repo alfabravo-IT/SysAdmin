@@ -15,7 +15,7 @@
     This command checks if the user "user123" was locked out and generates a report of the Domain Controllers that detected the lockout.
 
 .NOTES
-    Script created by: Andrea Balconi (Cegeka)
+    Script created by: Andrea Balconi
     Creation date: 2025-04-29
 #>
 

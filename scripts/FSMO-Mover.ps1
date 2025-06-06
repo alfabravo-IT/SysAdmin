@@ -22,7 +22,7 @@
     Run the script to check the health status of a Domain Controller and transfer FSMO roles if necessary.
 
 .NOTES
-    Script created by: Andrea Balconi (Cegeka)
+    Script created by: Andrea Balconi
     Creation date: 2025-04-29
     Version: 1.0
     Changes: Creation of the script for FSMO role checking and transfer.

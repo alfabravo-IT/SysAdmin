@@ -29,6 +29,12 @@
     - The script checks for existing users to avoid duplication.
     - Passwords are randomly generated and included in the output report.
 
+.AUTHOR
+    Andrea Balconi
+
+.DATE
+    2024-06-13
+
 .EXAMPLE
     # Run the script to create users from the default CSV file
     .\AD-Create-Users.ps1
