@@ -137,8 +137,6 @@ Go to **Azure Arc > SQL Server** and open the newly registered Arc-enabled SQL S
 **Important**
 Azure Arc automatically installs the Azure extension for SQL Server when a server connected to Azure Arc has SQL Server installed. All the SQL Server instance resources are automatically created in Azure, providing a centralized management platform for all your SQL Server instances.
 
-This article explains how to connect your SQL Server instance to Azure Arc on an Arc-enabled server. If the physical or virtual server isn't connected to Azure yet, follow the steps in [Connect your SQL Server to Azure Arc](https://learn.microsoft.com/en-us/sql/sql-server/azure-arc/connect?view=sql-server-ver17).
-
 If the machine with SQL Server is already connected to Azure Arc, to connect the SQL Server instances, install _Azure extension for SQL Server_. The extension is in the extension tab of "Server -Azure Arc" resource as **Azure Extension for SQL Server**.
 
 **Important**
@@ -180,5 +178,6 @@ Go to **Azure Arc > SQL Server** and open the newly registered Arc-enabled SQL S
 
 ![Screenshot of validating a connected SQL Server.](https://learn.microsoft.com/en-us/sql/sql-server/azure-arc/media/join/validate-sql-server-azure-arc.png?view=sql-server-ver17)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4NDM3MDcwNDBdfQ==
+eyJoaXN0b3J5IjpbLTEzMjkwMjIxOTIsLTE4NDM3MDcwNDBdfQ
+==
 -->
