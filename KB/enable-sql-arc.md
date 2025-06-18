@@ -33,9 +33,11 @@
 
 **On Azure**
 
-- An **Azure Subscription**
-- **Permissions**: Contributor or Owner role in the target Resource Group
-- **Resource Provider Registration**:
+ 1. An **Azure Subscription**
+ 2. **Permissions**: Contributor or Owner role in the target Resource Group
+ 3. **Resource Provider Registration**:
+		  
+
 	1. Go to **Subscriptions**  
 	2. Select your subscription  
 	3. Click **Resource providers**  
@@ -178,6 +180,6 @@ Go to **Azure Arc > SQL Server** and open the newly registered Arc-enabled SQL S
 
 ![Screenshot of validating a connected SQL Server.](https://learn.microsoft.com/en-us/sql/sql-server/azure-arc/media/join/validate-sql-server-azure-arc.png?view=sql-server-ver17)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMjkwMjIxOTIsLTE4NDM3MDcwNDBdfQ
-==
+eyJoaXN0b3J5IjpbMTY0ODMwNTUyMywtMTMyOTAyMjE5MiwtMT
+g0MzcwNzA0MF19
 -->
