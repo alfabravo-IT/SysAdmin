@@ -180,5 +180,9 @@ Go to **Azure Arc > SQL Server** and open the newly registered Arc-enabled SQL S
 
 ![Screenshot of validating a connected SQL Server.](https://learn.microsoft.com/en-us/sql/sql-server/azure-arc/media/join/validate-sql-server-azure-arc.png?view=sql-server-ver17)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4NDM3MDcwNDBdfQ==
+eyJwcm9wZXJ0aWVzIjoidGl0bGU6IEVuYWJsZSBBenVyZSBBcm
+MgZm9yIFNRTCBTZXJ2ZXJcbmF1dGhvcjogQW5kcmVhIEJhbGNv
+bmlcbnN0YXR1czogZHJhZnRcbmRhdGU6ICcyMDI1LTA2LTE4J1
+xuIiwiaGlzdG9yeSI6Wy00NDIxOTEyNSwtMTg0MzcwNzA0MF19
+
 -->
